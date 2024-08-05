@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+ALPHA=0.125
 
 # Function to compute the two arm angles from a given an (x, y) position
 def inverse_kinematics(x, y, L):
@@ -71,7 +72,12 @@ L = 1.0
 
 # Define the path as a series of (x, y) coordinates
 #path = generate_line((0.5, 0.5),(1.5, 1.5), 10)
-path = generate_circle((0.5, 0.5),1.2, 50)
+shape1 = generate_circle((0.5, 0.5),1.2, 50)
+shape2 = generate_circle((0.0, 0.0),1, 50)
+shape3 = generate_circle((0.0, 0.0),0.25, 50)
+shape4 = generate_circle((1.0, -1.5),0.125, 50)
+
+path = shape1 + shape2 + shape3 + shape4
 #path = generate_line((0.5, 0.5),(1.2, 1.2), 50)
 #path=[(1,1)]
 
@@ -103,14 +109,16 @@ for i in range(len(joint1_positions)):
     end_effector = end_effector_positions[i]
     
     # Plot the first section
-    ax.plot([0, joint1[0]], [0, joint1[1]], 'b-')
+    ax.plot([0, joint1[0]], [0, joint1[1]], 'b-', alpha=ALPHA)
     
     # Plot the second section
-    ax.plot([joint1[0], end_effector[0]], [joint1[1], end_effector[1]], 'r-')
-    ax.plot([end_effector[0]], [end_effector[1]], 'go', markersize=2)
+    ax.plot([joint1[0], end_effector[0]], [joint1[1], end_effector[1]], 'r-', alpha=ALPHA)
+
+    # Plot the pen tip
+    ax.plot([end_effector[0]], [end_effector[1]], 'go', markersize=4)
 
 # Annotate the final position
-ax.annotate('positions', end_effector_positions[-1], textcoords="offset points", xytext=(0,10), ha='center')
+#ax.annotate('positions', end_effector_positions[-1], textcoords="offset points", xytext=(0,10), ha='center')
 
 # Set plot limits and labels
 ax.set_xlim(-L*2, L*2)
